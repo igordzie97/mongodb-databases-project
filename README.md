@@ -1,6 +1,6 @@
 # Northwind database - MongoDB
 
-## Spis treści
+## Table of Contents
 1. [Description](#description)
 2. [Technologies](#technologies)
  - [Swagger](#swagger)
