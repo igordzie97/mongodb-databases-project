@@ -10,7 +10,6 @@
 5. [Containerization](#containerization)
 6. [Addresses](#addresses)
 7. [Documentation](#documentation)
-8. [Authors](#authors)
 
 ## Description
 The project purpose was to implement system executing basic operations on Northwind database in the selected technology.
@@ -27,45 +26,139 @@ In Northwind representation, relations between documents are simulated using emb
 - **Embedded** - saves complexity of queries, usually to one document.
 - **Reference** - saves redundation of data in each query. It also ensures that size of the document won't be higher than 16MB.
 
-Associative tables: Order Details, Employee Territories, CustomerCustomerDemo are included in the database.
+Associative tables: Order Details, Employee Territories, CustomerCustomerDemo aren't included in the database.
 
 ## Technologies
 - **MongoDB** – non SQL database management system
-- **Spring Boot + Java11** – service executing basic database operations serwis realizujący podstawowe operacje na bazie Northwind.
+- **Spring Boot + Java11** – service executing basic database operations
 - **Swagger** – automated documentation for describing RESTful APIs expressed using JSON.
 - **Docker** – app containerization.
 
 ### Swagger
 Dependecies from pom.xml:
-
-<img width="300" alt="Screen Shot 2021-08-23 at 00 56 12 AM" src="https://user-images.githubusercontent.com/34041060/130372643-b7ebaec0-5fd8-45b7-8904-d0554adade24.png">
-
+```xml
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-boot-starter</artifactId>
+    <version>3.0.0</version>
+</dependency>
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>3.0.0</version>
+</dependency>
+```
+ 
 Configuration in SwaggerConfig class:
+```java
+@Configuration
+public class SwaggerConfig {
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.OAS_30)
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.agh.northwindproject"))
+                .paths(PathSelectors.any())
+                .build();
+    }
 
-<img width="450" alt="Screen Shot 2021-08-16 at 00 40 35 AM" src="https://user-images.githubusercontent.com/34041060/129494798-7ec21a96-0105-4a89-9ee0-5eea783cf4d7.png">
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("Northwind Database Project")
+                .description("Operations on northwind database using MongoDB + Spring")
+                .build();
+    }
+}
+```
 
 ### Project Lombok
 Java library that automatically plugs into your editor and build tools. It replaces boilerplate code with easy to use annotations (constructors, getters, setters etc.).
 
 Dependencies from pom.xml:
-
-<img width="250" alt="Screen Shot 2021-08-23 at 00 55 47 AM" src="https://user-images.githubusercontent.com/34041060/130372630-4725e7a6-ed2e-406e-9798-117f4c284660.png">
+```xml
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <optional>true</optional>
+</dependency>
+```
 
 ## MongoDB database configuration
 Dependencies from pom.xml:
-
-<img width="350" alt="Screenshot 2021-08-24 at 00 45 21" src="https://user-images.githubusercontent.com/34041060/130528918-2db761f6-c156-46c2-a4bf-005c9aefa441.png">
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-mongodb</artifactId>
+</dependency>
+```
 
 Configuration file which is supported by Spring Boot - `application.properties`:
+```properties
+#APP CONFIG
+server.port=8080
+spring.application.name=northwind-service
 
-<img width="450" alt="Screenshot 2021-08-15 at 23 44 41" src="https://user-images.githubusercontent.com/34041060/129493705-194af92d-f823-4334-9ec0-bb02e05270eb.png">
+#MONGODB CONFIGURATION
+spring.data.mongodb.authentication-database=admin
+spring.data.mongodb.username=springuser
+spring.data.mongodb.password=Password
+spring.data.mongodb.database=${MONGODB_DB:db_northwind}
+spring.data.mongodb.host=${MONGODB_HOST:localhost}
+spring.data.mongodb.port=${MONGODB_PORT:27017}
+
+logging.level.org.springframework.data.mongodb.core.MongoTemplate=DEBUG
+```
 
 ## Containerization
 App is containerized using Docker - two containers are highlighted:
 - Container with configured MongoDB database - `mongo`
 - Container with server service - `northwind-service`
 
-<img width="300" alt="Screen Shot 2021-08-16 at 00 35 05 AM" src="https://user-images.githubusercontent.com/34041060/129494676-5b738e5c-37e5-4dec-9f45-808291d83a8e.png">
+**Dockerfile:**
+```dockerfile
+FROM openjdk:11-jdk-slim
+EXPOSE 8080
+COPY . app/
+RUN cd app; ./mvnw -Dmaven.test.skip package
+ENTRYPOINT [ "java", "-jar", "/app/target/northwind-service.jar" ]
+```
+
+**Docker Compose:**
+```docker-compose.yml
+version: '3'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      MONGO_INITDB_DATABASE: db_northwind
+      MONGO_INITDB_ROOT_USERNAME: springuser
+      MONGO_INITDB_ROOT_PASSWORD: Password
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb-dbnorthwind-volume:/data/db
+    networks:
+      - northwind-service-network
+
+  northwind-service:
+    image: northwind-service
+    container_name: 'northwind-service'
+    build: northwind-service/.
+    environment:
+      MONGODB_HOST: mongo
+    ports:
+      - 8080:8080
+    networks:
+      - northwind-service-network
+
+volumes:
+  mongodb-dbnorthwind-volume:
+
+networks:
+  northwind-service-network:
+```
 
 `docker-compose up -d` - building containers.
 
