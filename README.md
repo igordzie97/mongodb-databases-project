@@ -31,8 +31,8 @@ Associative tables: Order Details, Employee Territories, CustomerCustomerDemo ar
 ## Technologies
 - **MongoDB** – non SQL database management system
 - **Spring Boot + Java11** – service executing basic database operations
-- **Swagger** – automated documentation for describing RESTful APIs expressed using JSON.
-- **Docker** – app containerization.
+- **Swagger** – automated documentation for describing RESTful APIs expressed using JSON
+- **Docker** – app containerization
 
 ### Swagger
 Dependecies from pom.xml:
