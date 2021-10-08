@@ -169,7 +169,7 @@ networks:
 - **Swagger:** http://localhost:8080/swagger-ui/index.html
 
 ## Documentation
-- [App description (in Polish):](https://github.com/igordzie97/mongodb-databases-project/blob/main/documentation/documentation.pdf)
+- [App documentation (in Polish):](https://github.com/igordzie97/mongodb-databases-project/blob/main/documentation/documentation.pdf)
 
 ## Authors:
 - Igor Dzierwa
