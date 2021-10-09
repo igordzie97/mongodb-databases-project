@@ -29,10 +29,10 @@ In Northwind representation, relations between documents are simulated using emb
 Associative tables: Order Details, Employee Territories, CustomerCustomerDemo aren't included in the database.
 
 ## Technologies
-- **MongoDB** – non SQL database management system
-- **Spring Boot + Java11** – service executing basic database operations
-- **Swagger** – automated documentation for describing RESTful APIs expressed using JSON
-- **Docker** – app containerization
+- **MongoDB** – Non SQL database management system
+- **Spring Boot + Java11** – Service executing basic database operations
+- **Swagger** – Automated documentation for describing RESTful APIs expressed using JSON
+- **Docker** – Containerization
 
 ### Swagger
 Dependecies from pom.xml:
@@ -75,7 +75,7 @@ public class SwaggerConfig {
 ### Project Lombok
 Java library that automatically plugs into your editor and build tools. It replaces boilerplate code with easy to use annotations (constructors, getters, setters etc.).
 
-Dependencies from pom.xml:
+Dependencies from `pom.xml` file:
 ```xml
 <dependency>
     <groupId>org.projectlombok</groupId>
@@ -85,7 +85,7 @@ Dependencies from pom.xml:
 ```
 
 ## MongoDB database configuration
-Dependencies from pom.xml:
+Dependencies from `pom.xml` file:
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
