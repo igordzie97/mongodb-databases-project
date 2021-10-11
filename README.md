@@ -12,7 +12,7 @@
 7. [Documentation](#documentation)
 
 ## Description
-The project purpose is to implement system executing basic operations on Northwind database in the selected technology.
+The project purpose is to implement system executing basic operations on Northwind database. It is used MongoDB as an example of Document-oriented database.
 
 ### Database diagram
 <img width="630" alt="129492965-a82a59f0-1ac1-4239-a86e-fd1f3c32f29c" src="https://user-images.githubusercontent.com/34041060/135817429-81c646f6-8139-455d-9f5c-a051b4197c2e.png">
