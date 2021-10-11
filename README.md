@@ -29,7 +29,7 @@ In Northwind representation, relations between documents are simulated using emb
 Associative tables: Order Details, Employee Territories, CustomerCustomerDemo aren't included in the database.
 
 ## Technologies
-- **MongoDB** – Non SQL database management system
+- **MongoDB** – NoSQL database management system
 - **Spring Boot + Java11** – Service executing basic database operations
 - **Swagger** – Automated documentation for describing RESTful APIs expressed using JSON
 - **Docker** – Containerization
